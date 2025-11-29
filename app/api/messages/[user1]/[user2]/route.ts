@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { connectDB } from "@/lib/mongodb";
+import  connectDB  from "@/lib/mongodb";
 import Message from "@/models/Message";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ user1: string; user2: string }> }) {

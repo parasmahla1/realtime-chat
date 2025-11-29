@@ -23,6 +23,8 @@ const io = new Server(httpServer, {
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
+console.log('Connecting to MongoDB with URI:', MONGODB_URI.split('@')[0] + '@***');
+
 mongoose.connect(MONGODB_URI).then(() => {
   console.log('Connected to MongoDB');
 }).catch((err) => {
