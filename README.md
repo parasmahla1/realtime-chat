@@ -16,6 +16,7 @@ A real-time chat application built with Next.js and Socket.io. Users can join wi
 - **Backend**: Node.js, Express 5, Socket.io
 - **Database**: MongoDB
 - **Language**: TypeScript
+- **Deployment**: AWS, Nginx
 
 ## Prerequisites
 
