@@ -19,21 +19,21 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
   return (
     <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-3`}>
       <div
-        className={`max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2.5 ${
+        className={`max-w-[75%] px-4 py-2 ${
           isOwn
             ? 'bg-blue-600 text-white rounded-2xl rounded-br-sm'
             : 'bg-white text-slate-800 rounded-2xl rounded-bl-sm shadow-sm border border-slate-200'
         }`}
       >
-        <p className="break-words whitespace-pre-wrap text-[15px] leading-relaxed">{message.content}</p>
+        <p className="text-[15px] leading-normal break-words overflow-hidden">{message.content}</p>
         <div
           className={`flex items-center gap-1.5 mt-1 ${
             isOwn ? 'justify-end' : 'justify-start'
           }`}
         >
-          <p className={`text-[11px] ${isOwn ? 'text-blue-200' : 'text-slate-400'}`}>
+          <span className={`text-[11px] ${isOwn ? 'text-blue-200' : 'text-slate-400'}`}>
             {formatTime(message.timestamp)}
-          </p>
+          </span>
           {isOwn && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
