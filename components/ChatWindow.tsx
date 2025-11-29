@@ -24,10 +24,13 @@ export default function ChatWindow({ currentUser, selectedUser }: ChatWindowProp
   useEffect(() => {
     if (selectedUser) {
       setLoading(true);
+      setMessages([]);
       fetch(`/api/messages/${currentUser}/${selectedUser}`)
         .then((res) => res.json())
         .then((data) => {
-          setMessages(data);
+          if (Array.isArray(data)) {
+            setMessages(data);
+          }
           setLoading(false);
         })
         .catch((err) => {
@@ -100,21 +103,34 @@ export default function ChatWindow({ currentUser, selectedUser }: ChatWindowProp
 
   if (!selectedUser) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
-        <div className="text-center text-gray-500">
-          <p className="text-xl mb-2">Welcome, {currentUser}!</p>
-          <p>Select a user from the list to start chatting</p>
+      <div className="flex-1 flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="text-6xl mb-4">💬</div>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-2">
+            Welcome, {currentUser}!
+          </h2>
+          <p className="text-gray-500">
+            Select a user from the sidebar to start chatting
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-50">
+    <div className="flex-1 flex flex-col bg-gray-100">
       {/* Chat Header */}
-      <div className="p-4 bg-white border-b shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-800">{selectedUser}</h2>
-        <p className="text-sm text-green-500">Online</p>
+      <div className="p-4 bg-white border-b shadow-sm flex items-center gap-3">
+        <div className="relative">
+          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white text-lg font-semibold">
+            {selectedUser.charAt(0).toUpperCase()}
+          </div>
+          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800">{selectedUser}</h2>
+          <p className="text-sm text-green-500">Online</p>
+        </div>
       </div>
 
       {/* Messages Area */}
@@ -124,20 +140,25 @@ export default function ChatWindow({ currentUser, selectedUser }: ChatWindowProp
       >
         {loading ? (
           <div className="flex justify-center items-center h-full">
-            <p className="text-gray-500">Loading messages...</p>
+            <div className="text-gray-500">Loading messages...</div>
           </div>
         ) : messages.length === 0 ? (
           <div className="flex justify-center items-center h-full">
-            <p className="text-gray-500">No messages yet. Say hello!</p>
+            <div className="text-center text-gray-500">
+              <p className="text-lg mb-2">No messages yet</p>
+              <p className="text-sm">Send a message to start the conversation!</p>
+            </div>
           </div>
         ) : (
-          messages.map((message, index) => (
-            <MessageBubble
-              key={message._id || index}
-              message={message}
-              isOwn={message.sender === currentUser}
-            />
-          ))
+          <>
+            {messages.map((message, index) => (
+              <MessageBubble
+                key={message._id || index}
+                message={message}
+                isOwn={message.sender === currentUser}
+              />
+            ))}
+          </>
         )}
         {isTyping && <TypingIndicator username={selectedUser} />}
       </div>

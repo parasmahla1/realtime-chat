@@ -1,21 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Real-Time Chat",
-  description: "A simple real-time  chat application using Next.js and WebSockets",
+  title: 'Real-Time Chat',
+  description: 'A simple real-time chat application',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>
-        {children}
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
