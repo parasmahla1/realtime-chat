@@ -23,14 +23,17 @@ const io = new Server(httpServer, {
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
-console.log('Connecting to MongoDB with URI:', MONGODB_URI.split('@')[0] + '@***');
-
-mongoose.connect(MONGODB_URI).then(() => {
+mongoose.connect(MONGODB_URI, {
+  tls: true,
+  tlsAllowInvalidCertificates: false,
+  tlsAllowInvalidHostnames: false,
+  retryWrites: true,
+  w: 'majority',
+}).then(() => {
   console.log('Connected to MongoDB');
 }).catch((err) => {
   console.error('MongoDB connection error:', err);
 });
-
 // Message Schema 
 const messageSchema = new mongoose.Schema({
   sender: { type: String, required: true },

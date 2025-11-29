@@ -16,8 +16,10 @@ export default function MessageInput({
   disabled,
 }: MessageInputProps) {
   const [message, setMessage] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isTypingRef = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -54,6 +56,9 @@ export default function MessageInput({
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
       }
+      
+      // Keep focus on input after sending
+      inputRef.current?.focus();
     }
   };
 
@@ -66,20 +71,33 @@ export default function MessageInput({
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-white border-t">
-      <div className="flex gap-3">
+    <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-slate-200">
+      <div className={`flex items-center gap-3 p-2 bg-slate-50 rounded-xl border transition-all duration-200 ${
+        isFocused ? 'border-slate-300 shadow-sm' : 'border-slate-200'
+      }`}>
+        
+        {/* Input */}
         <input
+          ref={inputRef}
           type="text"
           value={message}
           onChange={handleChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           disabled={disabled}
           placeholder={disabled ? 'Select a user to start chatting' : 'Type your message...'}
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
+          className="flex-1 bg-transparent py-2 text-gray-800 placeholder-gray-400 outline-none disabled:cursor-not-allowed"
         />
+
+        {/* Send button */}
         <button
           type="submit"
           disabled={disabled || !message.trim()}
-          className="px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed font-medium"
+          className={`p-3 rounded-lg font-medium transition-all duration-200 ${
+            message.trim() && !disabled
+              ? 'bg-slate-800 text-white hover:bg-slate-700 active:scale-95'
+              : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

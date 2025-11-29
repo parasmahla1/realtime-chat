@@ -19,20 +19,34 @@ export default function MessageBubble({ message, isOwn }: MessageBubbleProps) {
   return (
     <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-3`}>
       <div
-        className={`max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2 rounded-2xl ${
+        className={`max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2.5 ${
           isOwn
-            ? 'bg-blue-500 text-white rounded-br-md'
-            : 'bg-white text-gray-800 rounded-bl-md shadow-sm'
+            ? 'bg-blue-600 text-white rounded-2xl rounded-br-sm'
+            : 'bg-white text-slate-800 rounded-2xl rounded-bl-sm shadow-sm border border-slate-200'
         }`}
       >
-        <p className="break-words whitespace-pre-wrap">{message.content}</p>
-        <p
-          className={`text-xs mt-1 ${
-            isOwn ? 'text-blue-100' : 'text-gray-400'
+        <p className="break-words whitespace-pre-wrap text-[15px] leading-relaxed">{message.content}</p>
+        <div
+          className={`flex items-center gap-1.5 mt-1 ${
+            isOwn ? 'justify-end' : 'justify-start'
           }`}
         >
-          {formatTime(message.timestamp)}
-        </p>
+          <p className={`text-[11px] ${isOwn ? 'text-blue-200' : 'text-slate-400'}`}>
+            {formatTime(message.timestamp)}
+          </p>
+          {isOwn && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+              stroke="currentColor"
+              className="w-3 h-3 text-blue-200"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+          )}
+        </div>
       </div>
     </div>
   );
